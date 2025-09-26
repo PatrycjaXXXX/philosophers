@@ -6,11 +6,12 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 10:35:54 by psmolich          #+#    #+#             */
-/*   Updated: 2025/09/26 13:12:42 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/09/26 16:11:52 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <stdlib.h>
 
 static int	get_rules(int ac, char **av, t_rules *rules)
 {
@@ -36,16 +37,15 @@ static int	get_rules(int ac, char **av, t_rules *rules)
 	return (SUCCESS);
 }
 
-int	populate_philos(t_philo **philos, t_rules rules)
+void	populate_philos(t_philo *philos, t_rules rules)
 {
 	int	i;
 
 	i = 0;
 	while (i < rules.nbr_of_philos)
 	{
-		philo
-		philos[i]->rules = rules;
-		philos[i]->i = i;
+		philos[i].rules = rules;
+		philos[i].i = i;
 		i++;
 	}
 }
@@ -66,6 +66,6 @@ int	main(int ac, char **av)
 	philos = (t_philo *)malloc(sizeof(t_philo) * rules.nbr_of_philos);
 	if (!philos)
 		return (ft_error(13), FAIL);
-	if (populate_philos(&philos, rules) == FAIL)
-		return (FAIL);
-	}
+	populate_philos(philos, rules);
+	return (free(philos), 0);
+}

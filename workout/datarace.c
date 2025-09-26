@@ -1,38 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   datarace.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/23 10:35:57 by psmolich          #+#    #+#             */
-/*   Updated: 2025/09/26 16:11:47 by psmolich         ###   ########.fr       */
+/*   Created: 2025/09/26 16:22:24 by psmolich          #+#    #+#             */
+/*   Updated: 2025/09/26 16:24:21 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+#include <stdio.h>
+#include <pthread.h>
 
-# define FAIL -1
-# define SUCCESS 1
+int counter = 0;
 
-# include <stdint.h> // int64_t
-# include <stdio.h>
+void*	increment(void* arg)
+{
+	for (int i = 0; i < 1000000; i++)
+		counter++;
+	return NULL;
+}
 
-typedef struct s_rules {
-	int		nbr_of_philos;
-	int64_t	t_die;
-	int64_t	t_eat;
-	int64_t	t_sleep;
-	int		must_eat;
-}	t_rules;
-
-typedef struct s_philo {
-	t_rules	rules;
-	int		i;
-}	t_philo;
-
-void	ft_error(int code);
-int		ft_atoi(char *str);
-
-#endif
+int main(void)
+{
+	pthread_t t1, t2;
+	pthread_create(&t1, NULL, increment, NULL);
+	pthread_create(&t2, NULL, increment, NULL);
+	pthread_join(t2, NULL);
+	pthread_join(t1, NULL);
+	printf("Counter = %d\n", counter);
+	return 0;
+}
