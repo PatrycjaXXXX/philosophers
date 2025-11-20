@@ -6,26 +6,46 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 10:35:54 by psmolich          #+#    #+#             */
-/*   Updated: 2025/09/26 16:11:52 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:54:28 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdlib.h>
 
+static int	non_digit_or_to_long(int ac, char **av)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < ac)
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if (!ft_isdigit(av[i][j]) || j > UINT_LENGTH)
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 static int	get_rules(int ac, char **av, t_rules *rules)
 {
-	if (ac < 5 || ac > 6)
+	if (ac < 5 || ac > 6 || non_digit_or_to_long(ac, av))
 		return (ft_error(0), FAIL);
 	rules->nbr_of_philos = ft_atoi(av[1]);
 	rules->t_die = (int64_t)ft_atoi(av[2]);
 	rules->t_eat = (int64_t)ft_atoi(av[3]);
 	rules->t_sleep = (int64_t)ft_atoi(av[4]);
-	if (rules->nbr_of_philos < 0
+	if (rules->nbr_of_philos <= 0
 		|| rules->t_die < 0
 		|| rules->t_eat < 0
 		|| rules->t_sleep < 0)
-		return (ft_error(1), FAIL);
+		return (ft_error(0), FAIL);
 	if (ac == 6)
 	{
 		rules->must_eat = ft_atoi(av[5]);
