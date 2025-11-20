@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:16:50 by psmolich          #+#    #+#             */
-/*   Updated: 2025/09/26 13:05:52 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/11/20 18:50:44 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	ft_error(int code)
 {
 	char	*err_msg[17];
 
-	err_msg[0] = "Wrong number of arguments";
-	err_msg[1] = "Argument cannot be a negative number";
+	err_msg[0] = "Error";
+	err_msg[1] = "Argument may only contain of digits";
 	err_msg[2] = "";
 	err_msg[3] = "";
 	err_msg[4] = "";
