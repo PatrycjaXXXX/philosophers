@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 10:35:54 by psmolich          #+#    #+#             */
-/*   Updated: 2025/11/27 15:59:41 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/11/27 19:54:46 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,16 @@
 
 void	clean_the_table(t_table *table, int sets)
 {
+	int	i;
+
 	while (sets--)
 		pthread_mutex_destroy(&(table->forks[sets]));
+	i = 0;
+	while (i < table->rules.nbr_of_philos)
+	{
+		pthread_join(table->philos[i].philo, NULL);
+		i++;
+	}
 	free(table->forks);
 	free(table->philos);
 	pthread_mutex_destroy(&(table->msg));
@@ -26,37 +34,19 @@ void	clean_the_table(t_table *table, int sets)
 	pthread_mutex_destroy(&(table->read));
 }
 
-void	seat_philos(t_table *table)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->rules.nbr_of_philos)
-		pthread_mutex_init(&(table->forks[i++]), NULL);
-	i = 0;
-	while (i < table->rules.nbr_of_philos)
-	{
-		table->philos[i].id = i + 1;
-		table->philos[i].left_fork = table->forks[i];
-		table->philos[i].right_fork = table->forks[(i + 1)
-			% table->rules.nbr_of_philos];
-		i++;
-	}
-}
-
 void	status_msg(int status, int id, pthread_mutex_t	msg)
 {
 	pthread_mutex_lock(&msg);
 	if (status == DEAD)
-		printf("timestamp %i died", id);
+		printf("timestamp %i died\n", id);
 	if (status == FORK)
-		printf("timestamp %i has taken a fork", id);
+		printf("timestamp %i has taken a fork\n", id);
 	if (status == EATS)
-		printf("timestamp %i is eating", id);
+		printf("timestamp %i is eating\n", id);
 	if (status == SLEEPS)
-		printf("timestamp %i is sleeping", id);
+		printf("timestamp %i is sleeping\n", id);
 	if (status == THINKS)
-		printf("timestamp %i is thinking", id);
+		printf("timestamp %i is thinking\n", id);
 	pthread_mutex_unlock(&msg);
 }
 
@@ -76,19 +66,46 @@ int	all_alive(t_table table)
 	return (1);
 }
 
-void	*routine(void *arg)
+void	*philo_routine(void *arg)
 {
-	t_data	*data;
+	t_philo	*philo;
 	t_table	table;
 
-	data = (t_data *)arg;
-	table = data->table;
-	while (all_alive(table) && table.rules.must_eat)
+	philo = (t_philo *)arg;
+	table = *(philo->table);
+	if (all_alive(table) && table.rules.must_eat)
 	{
-		usleep(10);
-		status_msg(THINKS, 1, table.msg);
+		usleep(100);
+		status_msg(THINKS, philo->id, table.msg);
 	}
 	return (NULL);
+}
+
+void	seat_philos(t_table *table)
+{
+	int		i;
+
+	i = 0;
+	while (i < table->rules.nbr_of_philos)
+		pthread_mutex_init(&(table->forks[i++]), NULL);
+	i = 0;
+	while (i < table->rules.nbr_of_philos)
+	{
+		table->philos[i].id = i + 1;
+		table->philos[i].left_fork = table->forks[i];
+		table->philos[i].right_fork = table->forks[(i + 1)
+			% table->rules.nbr_of_philos];
+		table->philos[i].meals_eaten = 0;
+		table->philos[i].alive = 1;
+		table->philos[i].table = table;
+		i++;
+	}
+	i = 0;
+	while (i < table->rules.nbr_of_philos)
+	{
+		pthread_create(&(table->philos[i].philo), NULL, philo_routine, &(table->philos[i]));
+		i++;
+	}
 }
 
 // 1 - number_of_philosophers

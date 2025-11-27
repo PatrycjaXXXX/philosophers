@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 10:35:57 by psmolich          #+#    #+#             */
-/*   Updated: 2025/11/27 15:57:27 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/11/27 19:40:21 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_philo
 	pthread_mutex_t	left_fork;
 	int				meals_eaten;
 	int				alive;
+	struct s_table	*table;
 }	t_philo;
 
 typedef struct s_table
@@ -55,12 +56,6 @@ typedef struct s_table
 	pthread_mutex_t	write;
 	pthread_mutex_t	read;
 }	t_table;
-
-typedef struct s_data
-{
-	int		id;
-	t_table	table;
-}	t_data;
 
 // UTILS
 int		ft_atoi(char *str);
