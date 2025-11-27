@@ -6,11 +6,11 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 16:46:57 by psmolich          #+#    #+#             */
-/*   Updated: 2025/11/20 16:59:25 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/11/26 15:36:57 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_stlen(char *s)
+int	ft_strlen(char *s)
 {
 	int	i;
 

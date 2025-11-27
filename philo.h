@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 10:35:57 by psmolich          #+#    #+#             */
-/*   Updated: 2025/11/20 18:38:29 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/11/27 15:57:27 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,17 @@
 
 # define FAIL 1
 # define SUCCESS 0
-# define UINT_LENGTH 10
+
+# define INTMAX_LENGTH 10
+
+# define DEAD 0
+# define FORK 1
+# define EATS 2
+# define SLEEPS 3
+# define THINKS 4
 
 # include <stdint.h> // int64_t
-# include <stdio.h>
+# include <pthread.h> // pthread_mutex_t
 
 typedef struct s_rules
 {
@@ -31,16 +38,38 @@ typedef struct s_rules
 
 typedef struct s_philo
 {
-	t_rules	rules;
-	int		i;
+	int				id;
+	pthread_t		philo;
+	pthread_mutex_t	right_fork;
+	pthread_mutex_t	left_fork;
+	int				meals_eaten;
+	int				alive;
 }	t_philo;
+
+typedef struct s_table
+{
+	t_rules			rules;
+	t_philo			*philos;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	msg;
+	pthread_mutex_t	write;
+	pthread_mutex_t	read;
+}	t_table;
+
+typedef struct s_data
+{
+	int		id;
+	t_table	table;
+}	t_data;
 
 // UTILS
 int		ft_atoi(char *str);
 int		ft_isdigit(char c);
-int		ft_stlen(char *s);
+int		ft_strlen(char *s);
 
 void	ft_error(int code);
+
+int		get_rules(int ac, char **av, t_rules *rules);
 
 
 #endif

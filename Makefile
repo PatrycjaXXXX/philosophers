@@ -6,7 +6,7 @@
 #    By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/23 10:30:52 by psmolich          #+#    #+#              #
-#    Updated: 2025/09/26 16:09:32 by psmolich         ###   ########.fr        #
+#    Updated: 2025/11/27 13:51:59 by psmolich         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ CFLAGS := -Wall -Wextra -Werror -pthread
 
 NAME := philo
 
-SRC := philo.c error.c ft_atoi.c
+SRC := $(wildcard utils/*) $(wildcard ./*.c)
 
 all: $(NAME)
 
