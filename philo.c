@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 10:35:54 by psmolich          #+#    #+#             */
-/*   Updated: 2025/11/27 19:54:46 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:25:40 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	status_msg(int status, int id, pthread_mutex_t	msg)
 	pthread_mutex_unlock(&msg);
 }
 
-int	all_alive(t_table table)
+static int	all_alive(t_table table)
 {
 	int	i;
 
@@ -66,6 +66,26 @@ int	all_alive(t_table table)
 	return (1);
 }
 
+static int	smb_still_needs_to_eat(t_table table)
+{
+	int	i;
+	int	nbr_fed;
+
+	i = 0;
+	nbr_fed = 0;
+	pthread_mutex_lock(&(table.read));
+	if (table.rules.must_eat == -1)
+		return (1);
+	while (i < table.rules.nbr_of_philos)
+	{
+		if (table.philos[i].meals_eaten >= table.rules.must_eat)
+			nbr_fed++;
+		i++;
+	}
+	pthread_mutex_unlock(&(table.read));
+	return (nbr_fed < table.rules.nbr_of_philos);
+}
+
 void	*philo_routine(void *arg)
 {
 	t_philo	*philo;
@@ -73,7 +93,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	table = *(philo->table);
-	if (all_alive(table) && table.rules.must_eat)
+	if (all_alive(table) && smb_still_needs_to_eat(table))
 	{
 		usleep(100);
 		status_msg(THINKS, philo->id, table.msg);
