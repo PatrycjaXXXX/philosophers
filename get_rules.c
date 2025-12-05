@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 15:34:17 by psmolich          #+#    #+#             */
-/*   Updated: 2025/11/27 14:04:02 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/12/05 15:46:26 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,9 @@ int	get_rules(int ac, char **av, t_rules *rules)
 	rules->t_die = (int64_t)ft_atoi(av[2]);
 	rules->t_eat = (int64_t)ft_atoi(av[3]);
 	rules->t_sleep = (int64_t)ft_atoi(av[4]);
+	rules->must_eat = -1;
 	if (ac == 6)
 		rules->must_eat = ft_atoi(av[5]);
-	else
-		rules->must_eat = -1;
 	// if (check_rules(*rules) == FAIL)
 	// 	return (ft_error(1), FAIL);
 	return (SUCCESS);

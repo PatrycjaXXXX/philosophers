@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 10:35:57 by psmolich          #+#    #+#             */
-/*   Updated: 2025/11/27 19:40:21 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/12/05 16:13:55 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # define FAIL 1
 # define SUCCESS 0
+
+# define TRUE 1
+# define FALSE 0
 
 # define INTMAX_LENGTH 10
 
@@ -65,6 +68,8 @@ int		ft_strlen(char *s);
 void	ft_error(int code);
 
 int		get_rules(int ac, char **av, t_rules *rules);
-
+int		all_alive(t_table table);
+int		smb_still_needs_to_eat(t_table table);
+void	status_msg(int status, int id, pthread_mutex_t	msg);
 
 #endif
